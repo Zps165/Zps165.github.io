@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="system">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>工时记 · 白夜班工时与加班费</title>
+  <meta name="description" content="白夜班工时记录：加班、加点、缺勤、请假、法定节假日与加班费，离线可用。" />
+  <meta name="theme-color" content="#080B11" />
+  <meta name="color-scheme" content="dark light" />
+  <link rel="manifest" href="./manifest.webmanifest" />
+  <link rel="icon" type="image/png" sizes="32x32" href="./icons/favicon-32.png" />
+  <link rel="apple-touch-icon" href="./icons/apple-touch-icon.png" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="工时记" />
+  <link rel="stylesheet" href="./css/style.css" />
+</head>
+<body>
+  <div class="app" id="app">
+    <main class="view" id="view" aria-live="polite"></main>
+    <nav class="nav" id="nav" aria-label="主导航"></nav>
+    <button class="fab" id="fab" type="button" aria-label="记录今天">＋</button>
+  </div>
+  <div class="overlay hidden" id="overlay"></div>
+  <div class="toast hidden" id="toast" role="status"></div>
+  <noscript><div class="noscript">需要启用 JavaScript 才能使用工时记。</div></noscript>
+  <script type="module" src="./js/app.js"></script>
+</body>
+</html>

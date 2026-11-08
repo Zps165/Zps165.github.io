@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>工时记 · 自检</title>
+<style>
+  body { background:#0B0F14; color:#E6EDF7; font:14px/1.7 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; padding:24px; }
+  h1 { font-size:18px; margin:0 0 12px; }
+  .pass { color:#2FBF71; }
+  .fail { color:#FF5C5C; }
+  .muted { color:#8A9BB1; }
+  pre { white-space:pre-wrap; background:#121821; border:1px solid #243040; border-radius:12px; padding:16px; }
+</style>
+</head>
+<body>
+<h1>工时记 · 计算引擎自检</h1>
+<div class="muted">用浏览器打开本页即可跑断言；全部通过时页面标题为 PASS。</div>
+<pre id="out">running…</pre>
+<script type="module" src="./js/selftest.js"></script>
+</body>
+</html>
