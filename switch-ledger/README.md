@@ -6,6 +6,8 @@
 
 纯静态、无后端、无第三方依赖、无需联网，数据保存在当前浏览器本地。支持安装到桌面和离线使用。
 
+版本与改动记录见 [CHANGELOG.md](CHANGELOG.md)（当前 1.1.0）。
+
 ## 四页
 
 - **概览 `#overview`（默认）**：净花费 Hero、eShop 钱包、四联统计卡和「查看全部清单」入口。
@@ -144,17 +146,21 @@ iOS 不会自动弹出安装提示，按上述步骤添加后会以全屏方式�
 - 直接访问：<https://zps165.github.io/switch-ledger/>
 - 站点入口：<https://zps165.github.io/>
 
-更新流程：把文件同步到仓库的 `switch-ledger/` 目录 → 升 `sw.js` 的 `CACHE` 版本号 → 提交并 `git push origin master`。
+更新流程：把文件同步到仓库的 `switch-ledger/` 目录 → 提交并 `git push origin master`。Service Worker 是网络优先的，页面文件改完刷新即生效，不用再改版本号；只有想一次性丢掉旧缓存时才需动 `sw.js` 的 `CACHE`。
 
 ### 更新版本
 
-`sw.js` 使用缓存优先策略。修改页面文件后，请把 `sw.js` 里的：
+`sw.js` 使用**网络优先**策略：先请求网络，成功就返回最新内容并写回缓存，只有离线或请求失败时才回退到缓存；请求还带 `cache: 'no-cache'`，绕过浏览器 HTTP 缓存。
+
+所以修改 `index.html` / `styles.css` / `app.js` 后**不需要改版本号**，用户刷新就能拿到新文件：
 
 ```js
-const CACHE = 'cartlog-v18';
+const CACHE = 'cartlog-v19'; // 离线缓存的容器名，不是「每次改文件都要升」的版本号
 ```
 
-改成新的版本号（例如 `cartlog-v19`），否则已安装的客户端可能继续使用旧缓存。
+只有当你想让所有已安装客户端一次性丢弃旧缓存时，才把这个名字改一下（例如 `cartlog-v20`）。
+
+应用版本记录在 [CHANGELOG.md](CHANGELOG.md)（当前 1.1.0），与数据版本 `APP_VERSION = 5` 是两回事：后者只在 `localStorage` 结构与备份 JSON 格式变化时才升，升高了旧版应用会拒绝导入更新的备份。
 
 ## 文件结构
 
@@ -164,7 +170,8 @@ switch-ledger/
 ├── styles.css              # 视觉、深色主题与响应式样式
 ├── app.js                  # 数据、余额、统计、设置、路由、备份逻辑
 ├── manifest.webmanifest    # PWA 清单
-├── sw.js                   # Service Worker / 离线缓存
+├── sw.js                   # Service Worker / 离线缓存（网络优先）
+├── CHANGELOG.md            # 更新日志
 ├── serve.sh                # 本地预览脚本
 └── icons/
     ├── icon.svg

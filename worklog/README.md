@@ -2,6 +2,8 @@
 
 一个只给手机用的工时记录 PWA：纯静态 HTML/CSS/JS，Python 起服务，数据只存本机，离线可用。
 
+版本与改动记录见 [CHANGELOG.md](CHANGELOG.md)（当前 1.3.0）。
+
 ## 功能
 
 - 月历首页：日历 + 本月加班费概览 + 7 项汇总，底部悬浮导航，日历页「＋」快速记今天
@@ -74,7 +76,7 @@ python serve.py --port 9000
 1. 在本机修改并测试 `worklog/`。
 2. 把改动提交到 `Zps165/Zps165.github.io` 的 `worklog/` 子目录，push 到 `master`；GitHub Pages 会自动重新构建。
 3. 如果 `github.com:443` 的 git 推送仍被网络阻断，可用 GitHub REST API 的 Git Data API 上传文件；上传后同样会触发 Pages 构建。
-4. 打开 `https://zps165.github.io/worklog/`，确认页面和 `sw.js` 缓存版本已更新。
+4. 打开 `https://zps165.github.io/worklog/`，确认页面已更新（Service Worker 网络优先，刷新即生效）。
 
 说明：
 
@@ -136,7 +138,7 @@ python serve.py --port 9000
 
 两种更新方式：
 
-1. **随应用更新**：改 `js/holidays.js`，同时把 `sw.js` 里的 `VERSION` 改一下（例如 `worklog-1.2.1`），刷新后新 SW 生效。
+1. **随应用更新**：改 `js/holidays.js`，提交推送即可。Service Worker 是网络优先的，用户刷新就会拿到新文件，不用再改 `VERSION`；`VERSION` 只是延迟缓存的名字，只有想一次性清空旧缓存时才动它。
 2. **在线 JSON**：设置 → 节假日 → 填一个 JSON 地址，格式：
 
 ```json
@@ -170,6 +172,7 @@ worklog/
 ├─ index.html
 ├─ manifest.webmanifest
 ├─ sw.js
+├─ CHANGELOG.md       # 更新日志（当前 1.3.0）
 ├─ serve.py
 ├─ css/style.css
 ├─ js/

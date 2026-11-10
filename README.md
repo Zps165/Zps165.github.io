@@ -21,7 +21,7 @@
 - 多区服钱包（港 / 日 / 美 / 欧 / 国 / 其他），各自币种互不混算，支持自定义区服与三位币种
 - 平台、配件类型、区服可在设置页增删改，内置项可隐藏不可删
 - 暖白 / 深色 / 跟随系统三主题；JSON 完整备份与恢复、CSV 导出
-- 存储键 `cartlog.switch.v1`，结构 v5；Service Worker 缓存名 `cartlog-v18`
+- 存储键 `cartlog.switch.v1`，结构 v5；应用版本 1.1.0（见 [CHANGELOG](switch-ledger/CHANGELOG.md)）
 
 详见 [switch-ledger/README.md](switch-ledger/README.md)。
 
@@ -32,7 +32,7 @@
 - 加班分档：工作日超 8h 计 1.5×，休息日 2×，法定节假日 3×
 - 内置 2025–2027 国务院节假日安排，支持在线 JSON 更新
 - 月度汇总、公式拆解、计薪加班构成图表、CSV 导出
-- 存储键 `worklog:v1`；Service Worker 缓存名取自脚本内 `VERSION`
+- 存储键 `worklog:v1`；应用版本 1.3.0（见 [CHANGELOG](worklog/CHANGELOG.md)）
 
 详见 [worklog/README.md](worklog/README.md)。
 
@@ -40,7 +40,8 @@
 
 ```text
 Zps165.github.io/
-├── index.html                  # 入口页，列出各项目
+├── index.html                  # 入口页，从 projects.json 读取并渲染项目卡片
+├── projects.json               # 项目清单：新增项目只改这里，不用动首页代码
 ├── .nojekyll                   # 关闭 Jekyll，按静态文件原样发布（含下划线开头的文件）
 ├── switch-ledger/              # Switch 花费账本
 │   ├── index.html
@@ -48,6 +49,7 @@ Zps165.github.io/
 │   ├── styles.css
 │   ├── manifest.webmanifest
 │   ├── sw.js
+│   ├── CHANGELOG.md
 │   ├── serve.sh
 │   └── icons/
 └── worklog/                    # 工时记
@@ -55,6 +57,7 @@ Zps165.github.io/
     ├── selftest.html
     ├── manifest.webmanifest
     ├── sw.js
+    ├── CHANGELOG.md
     ├── css/
     ├── js/
     └── icons/
@@ -93,20 +96,47 @@ git push origin master
 - 每个项目自带 `manifest.webmanifest`，`id` / `start_url` / `scope` 均为 `./`，Service Worker 以 `./sw.js` 注册、scope 为 `./`，互不影响。
 - 仓库根目录保留 `.nojekyll`，避免 Jekyll 忽略以下划线开头的资源。
 
-### 修改后记得升缓存版本
+### Service Worker：网络优先
 
-两个项目都使用缓存优先的 Service Worker，改完页面文件后必须同步修改版本号，否则已安装的客户端可能一直用旧缓存：
+两个项目的 Service Worker 都是**网络优先**：先取网络，成功就用最新内容并写回缓存，只有离线或请求失败时才回退到缓存。请求还统一带 `cache: 'no-cache'`，绕过浏览器 HTTP 缓存和 GitHub Pages 的 `max-age=600`。
 
-- `switch-ledger/sw.js`：`const CACHE = 'cartlog-v18';`
-- `worklog/sw.js`：`VERSION` 常量
+所以改完页面文件**直接刷新就生效，不需要再改任何版本号**。
+
+`switch-ledger/sw.js` 的 `CACHE`、`worklog/sw.js` 的 `VERSION` 现在只是离线缓存的名字，只在想一次性丢弃全部旧缓存时才有必要升一下。
+
+### 更新日志
+
+每个项目在各自目录下维护 `CHANGELOG.md`，格式参考 Keep a Changelog，版本号用 `x.y.z`、日期用 `YYYY-MM-DD`：
+
+- [switch-ledger/CHANGELOG.md](switch-ledger/CHANGELOG.md)
+- [worklog/CHANGELOG.md](worklog/CHANGELOG.md)
+
+发布时在 `CHANGELOG.md` 顶部加一节 `## x.y.z — YYYY-MM-DD`，并同步更新 `projects.json` 里的 `version` 与 `updated`，首页卡片上的版本信息就跟着变了。
 
 ## 新增一个项目
 
+首页不再硬编码项目卡片：它读取根目录的 `projects.json` 生成，新增项目**不需要改任何首页代码**。
+
 1. 新建 `<project>/` 目录，放入静态文件（`index.html`、样式、脚本、图标）。
-2. 如需 PWA：加 `manifest.webmanifest` 与 `sw.js`，路径全部写成 `./` 相对形式。
-3. 在根 [index.html](index.html) 的卡片区加一个指向 `./<project>/` 的 `<a class="card">`。
-4. 在本文件「在线地址」与「目录结构」中补上对应条目。
-5. 提交并推送，等 Pages 构建完成后访问 `https://zps165.github.io/<project>/` 验证。
+2. 在 [projects.json](projects.json) 的 `projects` 数组里加一条：
+
+   ```json
+   {
+     "dir": "my-tool",
+     "name": "我的工具",
+     "tag": "PWA · 工具",
+     "description": "一句话说明它能干什么。",
+     "cta": "打开我的工具",
+     "version": "1.0.0",
+     "updated": "2026-11-10",
+     "changelog": "my-tool/CHANGELOG.md"
+   }
+   ```
+
+   字段都可省略，`dir` 必填；可选 `order`（数字，越小越靠前）、`hidden`（`true` 则不在首页显示）。
+3. 如需 PWA：加 `manifest.webmanifest` 与 `sw.js`，路径全部写成 `./` 相对形式。
+4. 建议加 `<project>/CHANGELOG.md`，格式照现有两个项目的写。
+5. 在本文件「在线地址」与「目录结构」中补上条目，提交并推送；Pages 构建完成后访问 `https://zps165.github.io/<project>/` 验证，首页卡片会自动出现。
 
 ## 隐私
 
