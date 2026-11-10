@@ -74,7 +74,7 @@ python -m http.server 8090
 注意：
 
 - 必须通过 `http://localhost` 或 HTTPS 访问，`file://` 下浏览器不会注册 Service Worker，无法安装为 PWA。
-- 请不要用 `localhost:8090` 之外的路径直接打开 `index.html`，子项目依赖目录相对路径。
+- 不要直接双击 `index.html` 用 `file://` 打开：子项目依赖目录相对路径，且 `file://` 下 Service Worker 无法注册。
 - `switch-ledger/` 另附 `serve.sh`（监听 `0.0.0.0:8090`），方便手机在同一 Wi-Fi 下访问。
 
 ## 部署
