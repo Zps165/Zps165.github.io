@@ -137,6 +137,15 @@ iOS 不会自动弹出安装提示，按上述步骤添加后会以全屏方式�
 
 所有路径都是相对路径，可以部署在域名根目录，也可以放在子目录（例如 `/switch-ledger/`）。
 
+### 当前线上地址
+
+本项目已随 [Zps165/Zps165.github.io](https://github.com/Zps165/Zps165.github.io) 一起发布，位于仓库的 `switch-ledger/` 子目录（`master` 分支自动构建）：
+
+- 直接访问：<https://zps165.github.io/switch-ledger/>
+- 站点入口：<https://zps165.github.io/>
+
+更新流程：把文件同步到仓库的 `switch-ledger/` 目录 → 升 `sw.js` 的 `CACHE` 版本号 → 提交并 `git push origin master`。
+
 ### 更新版本
 
 `sw.js` 使用缓存优先策略。修改页面文件后，请把 `sw.js` 里的：
