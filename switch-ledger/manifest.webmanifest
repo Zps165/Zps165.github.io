@@ -1,0 +1,98 @@
+{
+  "id": "./",
+  "name": "Cart Log · Switch 花费与 eShop 余额",
+  "short_name": "Switch 账本",
+  "description": "记录 Switch 卡带、配件、点卡的现金支出，以及 eShop 数字版游戏、余额支付和多区服余额。自动计算净花费，可安装、可离线使用。",
+  "lang": "zh-CN",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "display_override": [
+    "standalone",
+    "minimal-ui"
+  ],
+  "orientation": "portrait",
+  "background_color": "#f2ede3",
+  "theme_color": "#f2ede3",
+  "categories": [
+    "finance",
+    "productivity",
+    "utilities"
+  ],
+  "icons": [
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "记一笔",
+      "short_name": "记一笔",
+      "description": "快速新增一笔卡带、配件、点卡或 eShop 游戏记录",
+      "url": "./?action=new",
+      "icons": [
+        {
+          "src": "icons/icon-192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "记一张点卡",
+      "short_name": "记点卡",
+      "description": "新增一张点卡，面值自动充入对应区服余额",
+      "url": "./?action=new&category=pointcard",
+      "icons": [
+        {
+          "src": "icons/icon-192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "记一款 eShop 游戏",
+      "short_name": "记 eShop",
+      "description": "记录余额支付或直购的 eShop 数字版游戏",
+      "url": "./?action=new&category=eshop",
+      "icons": [
+        {
+          "src": "icons/icon-192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "查看已出二手",
+      "short_name": "已出二手",
+      "description": "查看已经售出的卡带和配件",
+      "url": "./?filter=sold",
+      "icons": [
+        {
+          "src": "icons/icon-192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    }
+  ],
+  "prefer_related_applications": false
+}
